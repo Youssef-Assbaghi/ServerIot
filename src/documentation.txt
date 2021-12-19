@@ -1,0 +1,23 @@
+La primera versión del sketchboard que hicimos fue bastante simple y realizada con el paint.
+En esta primera versión, teníamos únicamente 3 pantallas en las que mostrabamos la pantalla de proyectos,
+en los cuales teníamos los proyectos activos y los proyectos inactivos. En la segunda pantalla teníamos todo
+lo relacionado con las tareas de un proyecto. En la tercera pantalla teníamos todo lo relacionado con los intervalos
+de una determinada tarea.
+
+Para la segunda versión, cambiamos de sistema para realizar el prototipo: pasamos a utilizar la plataforma
+de diseño invisionapp, aplicación para crear prototipos bastante útil y que ya conocíamos puesto que la 
+habíamos utilizado previamente en Requists del Software.
+
+En esta segunda versión hemos realizado bastantes cambios: Primero de todo añadir bastantes pantallas que no teníamos 
+hechas: Pantalla de bienvenida, pantalla de configuración.
+
+Otro cambio importante realizado ha sido la forma en la que estructuramos los proyectos/tareas/intervalos según su estado:
+Antes teníamos todos estados en la misma pantalla; ahora sin embargo lo tenemos agrupado en diferentes pestañas, siendo la pestaña
+'activos' como default. 
+También hemos añadido funcionalidades que nos faltaban como son la de calcular período, la de mostrar información acerca del proyecto/tarea/intervalo
+,el botón de ajustes y la implenetación de la pantalla de búsqueda por tags.
+
+
+Por último, hemos añadido comentarios en cada pantalla así como los posibles caminos a seguir según la pantalla en la que te encuentres.
+
+

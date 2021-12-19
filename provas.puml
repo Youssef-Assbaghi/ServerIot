@@ -1,0 +1,208 @@
+@startuml
+
+   abstract class Plano{
+  -nombre : String
+  -fechainicio : LocalDateTime
+  -fechafinal : LocalDateTime
+  -finalizado : boolean
+  -tags : List<String>
+  -activo : boolean
+  +Plano
+  +Plano(nombre: String,tags: List<String>)
+  +Plano(p: Plano)
+  +setNombre(nom: String)
+  +setFinalizado(x: boolean)
+  +setFechaInicio(hora: LocalDateTime)
+  +setFechaFinal(hora: LocalDateTime)
+  +getNombre() : String
+  +getFechaInicio() : LocalDateTime
+  +getFechaFinal() : LocalDateTime
+  +getTags() : List<String>
+  +getActivo() : boolean
+  +getFinalizado() : boolean
+  +addTags(tags: String)
+  +removeTags(pos: int)
+  +mostra()
+   +accept(visitor: Visitor, tags: List<String>) : ArrayList<String>
+ }
+
+ class Proyecto{
+  -dtf : DateTimeFormatter
+  -planos : ArrayList<Plano>
+  -reloj : Clock
+  -duracionproyecto : Duration
+  -duracionPlong : long
+  -Padre : Proyecto
+  +proyecto()
+  +proyecto(nom: String, tags: List<String>,p: Proyecto)
+  +getPlanos() : ArrayList<Plano>
+  +terminarProyecto()
+  +actualizarProyecto(Tarea t)
+  +addplano(p: Plano)
+  +getDuracionProyectoLong() : long
+  +calcularDuracionProyecto()
+  +getDuracionProyecto() : Duration
+  +getActivo() : boolean
+  +mostraApA()
+  +muestraListaPlanos()
+  +mostra()
+  -invariant() : boolean
+  +accept(visitor: Visitor, tags: List<String>) : ArrayList<String>
+ }
+
+
+ class Tarea{
+  -dtf : DateTimeFormatter
+  -reloj : Clock
+  -duracionTarea : Duration
+  -duracionlong : long
+  -Padre : Proyecto
+  -intervalos : ArrayList<Intervalo>
+  -activo : boolean
+  add : long
+  +Tarea()
+  +Tarea(nombre: String, tags: List<String>, padre: Proyecto)
+  +iniciarIntervalo()
+  +pararIntervalo()
+  +getIntervalo(pos: int) : Intervalo
+  +terminarTarea()
+  +actualizarTarea()
+  +calcularduracionTarea()
+  +getDuracionlong : long
+  +getDuracionTarea() : Duration
+  +getActivo() : boolean
+  +getMostrado() : boolean
+  +mostraApA()
+  +mostra()
+  -invariant() : boolean
+  +accept(visitor: Visitor, tags: List<String>) : ArrayList<String>
+ }
+
+ class Intervalo{
+ +Intervalo(t: Tarea)
+ +comenzar()
+ +finalizar()
+ +getActivo() : boolean
+ +getDuracionLong() : long
+ +getDuracion() : Duration
+ +calcularDuracion()
+ +getFechaInicio() : LocalDateTime
+ +getFechaFinal() : LocalDateTime
+ +getPadre(): Tarea
+ +mostraintervalo()
+ +update(Observable: Observable, dato:Object)
+ -Fecha Inicio : LocalDateTime
+ -Fecha Final : LocalDateTime
+ -duracion : Duration
+ -padre : Tarea
+ -duracionlong : long
+ -activo : boolean
+ -dtf : DateFormatter
+ }
+
+ class main{
+ +main(args[]: String)
+ +toJsonFile(p: Proyecto)
+ +JsonFiletoClass()
+ }
+
+class LocalDateTimeSerializer{
+-formatter : DateTimeFormatter
++LocalDateTimeSerializer()
++serialize(arg0: LocalDateTime,
+arg1: JsonGenerator,
+arg2: SerializerProvider) : LocalDateTime
+}
+
+class LocalDateTimeDeserializer{
+-formatter : DateTimeFormatter
++LocalDateTimeDeserializer()
++deserialize(arg0: JsonParser,
+ arg1: DeserializationContext) : LocalDateTime
+}
+
+class DurationDeserializer{
++deserialize(arg0: JsonParser,
+arg1: DeserializationContext) : Duration
+}
+
+class DurationSerialize{
++serialize(arg0: Duration,arg1: JsonGenerator,
+arg2: SerializerProvider) : Duration
+}
+
+ class Clock{
+ -timer:Timer
+ -period:int
+ -s:LocalDateTime
+ -Clock(period:int)
+ -instance: Clock
+ +start()
+ +stop()
+ +getInstance() : Clock
+ }
+
+
+
+Interface Visitor{
+ +recorreTarea(tarea: Tarea,tags: List<String>) : ArrayList<String>)
+ +recorreProyecto(proyecto: Proyecto,tags: List<String>) : ArrayList<String>)
+}
+
+class BusquedaTags{
+ +recorreTarea(tarea: Tarea,tags: List<String>) : ArrayList<String>)
+ +recorreProyecto(proyecto: Proyecto,tags: List<String>) : ArrayList<String>)
+}
+
+
+ class Observable{
+ java.util.observable
+ }
+ class Json{
+ com.fasterxml.jackson
+ }
+BusquedaTags..|>Visitor
+ Clock --|> Observable
+ Proyecto "1..*"*--"0..*" Tarea: contiene
+ Tarea "1"*-right-"0..*" Intervalo: contiene
+ Plano <|--(Proyecto, Tarea)
+skinparam nodesep 40
+ Json <|-left- LocalDateTimeDeserializer
+ Json <|-down- LocalDateTimeSerializer
+ Json <|-right- DurationSerialize
+ Json <|-down- DurationDeserializer
+
+
+ Proyecto "1"*--"0..*" Plano
+ Json "0..*"-up->"0..*" main :utiliza
+ main "1..1"-->"1..1" Visitor : llama
+ Clock "1..1"*--"returns" Clock
+ @enduml
+ mostrar cada 2s
+ Observer actualizar tarea, observador RELOJ(new clase)
+
+ Proyecto "1"*--"0..*" Tarea: contiene
+ Proyecto "1"*-down-"n" Proyecto: puede contener
+ Tarea "1"*--"0..*" Intervalo: contiene (composicion)
+ Plano <|-down-(Proyecto, Tarea)
+
+
+ PROYECTO -->> TAREAS
+          -->> PROYECTOS -->> TAREAS
+
+ Tiempo total acc=acc+ListaTareas+Proyectos[i].tiempototal
+
+ class Estadisticas{
+ +calcularTiempoProyecto(Proyecto)
+ +calcularTiempoTarea(Tarea)
+ +mostrarTiempo()
+ +mostrarmascosas()
+ }
+
+ import java.time.LocalDateTime;
+
+ note "-1 Proyecto puede contener de 0-n Tareas\n-Si el Proyecto muere, las Tareas también" as PROYECTOTAREA
+ Proyecto .. PROYECTOTAREA
+ PROYECTOTAREA .. Tarea
+
+ note "-1 Tarea puede contener de 0-n Intervalos\n-Tareas contienen listas de intervalos (logs)" as TareaIntervalo

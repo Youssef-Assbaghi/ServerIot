@@ -1,0 +1,50 @@
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder> <pattern>
+            %d{HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n
+        </pattern> </encoder>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="ch.qos.logback.classic.html.HTMLLayout">
+                <pattern>%relative%thread%mdc%level%logger%msg</pattern>
+            </layout>
+        </encoder>
+        <file>loggers.html</file>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE" />
+    </root>
+
+    <!--  MILESTONE 1 y 2 (Apendice A y B)  -->
+    <logger name="Main" level="info"/>
+    <logger name="milestone1.Proyecto" level="info"/>
+    <logger name="milestone1.Tarea" level="info"/>
+    <logger name="milestone1.Intervalo" level="info"/>
+    <logger name="milestone1.Clock" level="info"/>
+    <logger name="milestone2.BusquedaTags" level="info"/>
+    <logger name="milestone2.Proyecto" level="info"/>
+
+    <!--  MILESTONE 1 (Apendice A y B)
+    <logger name="Main" level="info"/>
+    <logger name="milestone1.Proyecto" level="info"/>
+    <logger name="milestone1.Tarea" level="info"/>
+    <logger name="milestone1.Intervalo" level="info"/>
+    <logger name="milestone1.Clock" level="info"/>
+    <logger name="milestone2.BusquedaTags" level="warn"/>
+    <logger name="milestone2.Proyecto" level="warn"/>   -->
+
+    <!-- MILESTONE 2 (Solo Busqueda por tags)
+    <logger name="Main" level="warn"/>
+    <logger name="milestone1.Proyecto" level="warn"/>
+    <logger name="milestone1.Tarea" level="warn"/>
+    <logger name="milestone1.Intervalo" level="warn"/>
+    <logger name="milestone1.Clock" level="warn"/>
+    <logger name="milestone2.BusquedaTags" level="info"/>
+    <logger name="milestone2.Proyecto" level="info"/>   -->
+
+</configuration>
+
